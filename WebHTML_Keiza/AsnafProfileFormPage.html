@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Asnaf Profile</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- AJAX API Caller -->
+    <script src="js/Ajax.API.Caller.js"></script>
+
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+        }
+
+        .page-header {
+            border-bottom: 2px solid #337ab7;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+
+        .form-section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #337ab7;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #337ab7;
+        }
+
+        .required {
+            color: #d9534f;
+        }
+
+        .btn-group-custom {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: right;
+        }
+
+            .btn-group-custom .btn {
+                margin-left: 10px;
+                min-width: 120px;
+            }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        .form-control:focus {
+            border-color: #337ab7;
+            box-shadow: 0 0 8px rgba(51, 122, 183, 0.3);
+        }
+
+        .help-block {
+            font-size: 12px;
+            color: #737373;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1><span class="glyphicon glyphicon-user"></span> Add New Asnaf Profile</h1>
+            <p class="text-muted">Fill in the details below to register a new Asnaf profile</p>
+        </div>
+
+        <!-- Alert Messages -->
+        <div id="divAlert"></div>
+
+        <!-- Loading Indicator -->
+        <div id="divLoading" class="loading">
+            <span class="glyphicon glyphicon-refresh glyphicon-spin"></span> Saving profile...
+        </div>
+
+        <!-- Asnaf Profile Form -->
+        <form id="frmAsnafProfile">
+            <!-- Personal Information Section -->
+            <div class="form-section-title">
+                <span class="glyphicon glyphicon-user"></span> Personal Information
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="txtName">Full Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="txtName" placeholder="Enter full name" required />
+                        <span class="help-block">As per identification document</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="txtIcno">IC Number / Passport</label>
+                        <input type="text" class="form-control" id="txtIcno" placeholder="e.g., 901231-01-1234" />
+                        <span class="help-block">Malaysian IC or passport number</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="txtEmail">Email Address</label>
+                        <input type="email" class="form-control" id="txtEmail" placeholder="email@example.com" />
+                        <span class="help-block">For correspondence purposes</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="txtContact">Contact Number</label>
+                        <input type="text" class="form-control" id="txtContact" placeholder="e.g., 012-3456789" />
+                        <span class="help-block">Mobile or home number</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ddlStatus">Status</label>
+                        <select class="form-control" id="ddlStatus">
+                            <option value="ACTIVE" selected>ACTIVE</option>
+                            <option value="INACTIVE">INACTIVE</option>
+                            <option value="CONFIRMED">CONFIRMED</option>
+                        </select>
+                        <span class="help-block">Current profile status</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Information Section -->
+            <div class="form-section-title">
+                <span class="glyphicon glyphicon-home"></span> Residential Address
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="txtAddress1">Address Line 1</label>
+                        <input type="text" class="form-control" id="txtAddress1" placeholder="Street address, house number" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="txtAddress2">Address Line 2</label>
+                        <input type="text" class="form-control" id="txtAddress2" placeholder="Apartment, suite, unit, building" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="txtAddress3">Address Line 3</label>
+                        <input type="text" class="form-control" id="txtAddress3" placeholder="Additional address information (optional)" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="txtPostcode">Postcode</label>
+                        <input type="text" class="form-control" id="txtPostcode" placeholder="e.g., 50000" maxlength="5" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="txtDistrict">District</label>
+                        <input type="text" class="form-control" id="txtDistrict" placeholder="e.g., Kuala Lumpur" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="txtState">State</label>
+                        <select class="form-control" id="txtState">
+                            <option value="">-- Select State --</option>
+                            <option value="Johor">Johor</option>
+                            <option value="Kedah">Kedah</option>
+                            <option value="Kelantan">Kelantan</option>
+                            <option value="Kuala Lumpur">Kuala Lumpur</option>
+                            <option value="Labuan">Labuan</option>
+                            <option value="Melaka">Melaka</option>
+                            <option value="Negeri Sembilan">Negeri Sembilan</option>
+                            <option value="Pahang">Pahang</option>
+                            <option value="Penang">Penang</option>
+                            <option value="Perak">Perak</option>
+                            <option value="Perlis">Perlis</option>
+                            <option value="Putrajaya">Putrajaya</option>
+                            <option value="Sabah">Sabah</option>
+                            <option value="Sarawak">Sarawak</option>
+                            <option value="Selangor">Selangor</option>
+                            <option value="Terengganu">Terengganu</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="btn-group-custom">
+                <button type="button" class="btn btn-default" id="btnCancel">
+                    <span class="glyphicon glyphicon-remove"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-success" id="btnSave">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> Save Profile
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>$(document).ready(function () {
+            // Event listeners
+            $('#btnSave').click(function () {
+                fnSaveAsnafProfile();
+            });
+
+            $('#btnCancel').click(function () {
+                fnGoBack();
+            });
+
+            // Form validation on submit
+            $('#frmAsnafProfile').submit(function (e) {
+                e.preventDefault();
+                fnSaveAsnafProfile();
+            });
+
+            // Auto-focus on name field
+            $('#txtName').focus();
+        });
+
+        /**
+         * Save Asnaf Profile
+         */
+        function fnSaveAsnafProfile() {
+            // Validate required fields
+            var asnafName = $('#txtName').val().trim();
+            if (!asnafName) {
+                fnShowAlert('warning', 'Asnaf name is required.');
+                $('#txtName').focus();
+                return;
+            }
+
+            // Collect form data
+            var asnafIcno = $('#txtIcno').val().trim();
+            var email = $('#txtEmail').val().trim();
+            var contactno = $('#txtContact').val().trim();
+            var asnafStatus = $('#ddlStatus').val();
+            var resAddress1 = $('#txtAddress1').val().trim();
+            var resAddress2 = $('#txtAddress2').val().trim();
+            var resAddress3 = $('#txtAddress3').val().trim();
+            var postcode = $('#txtPostcode').val().trim();
+            var district = $('#txtDistrict').val().trim();
+            var state = $('#txtState').val();
+            var createdBy = 'SYSTEM'; // Replace with actual logged-in user
+
+            var paramArray = JSON.stringify({
+                asnafName: asnafName,
+                asnafIcno: asnafIcno,
+                resAddress1: resAddress1,
+                resAddress2: resAddress2,
+                resAddress3: resAddress3,
+                postcode: postcode,
+                district: district,
+                state: state,
+                email: email,
+                contactno: contactno,
+                asnafStatus: asnafStatus,
+                createdBy: createdBy
+            });
+
+            fnShowLoading(true);
+            fnClearAlert();
+
+            PageMethodMSSQL('AddAsnafProfile', paramArray,
+                function (data) {
+                    fnOnSaveSuccess(data);
+                },
+                function (xhr, status, error) {
+                    fnOnError('Error adding profile: ' + error);
+                },
+                true
+            );
+        }
+
+        /**
+         * On Save Success
+         */
+        function fnOnSaveSuccess(data) {
+            fnShowLoading(false);
+
+            if (data && data.status === 'Y') {
+                fnShowAlert('success', '<strong>Success!</strong> Asnaf profile has been added successfully!');
+
+                // Clear form
+                $('#frmAsnafProfile')[0].reset();
+
+                // Redirect back to list page after 2 seconds
+                setTimeout(function () {
+                    fnGoBack();
+                }, 2000);
+            } else {
+                fnShowAlert('danger', '<strong>Error!</strong> ' + (data.message || 'Failed to save profile.'));
+            }
+        }
+
+        /**
+         * Go Back to Asnaf Profile Page
+         */
+        function fnGoBack() {
+            window.location.href = 'AsnafProfilePage.html';
+        }
+
+        /**
+         * Show Loading Indicator
+         */
+        function fnShowLoading(show) {
+            if (show) {
+                $('#divLoading').show();
+                $('#btnSave').prop('disabled', true);
+                $('#btnCancel').prop('disabled', true);
+            } else {
+                $('#divLoading').hide();
+                $('#btnSave').prop('disabled', false);
+                $('#btnCancel').prop('disabled', false);
+            }
+        }
+
+        /**
+         * Show Alert Message
+         */
+        function fnShowAlert(type, message) {
+            var alertClass = 'alert-' + type;
+            var iconClass = type === 'success' ? 'glyphicon-ok-sign' :
+                           type === 'danger' ? 'glyphicon-exclamation-sign' :
+                           type === 'warning' ? 'glyphicon-warning-sign' :
+                           'glyphicon-info-sign';
+
+            var alertHtml = `<div class="alert ${alertClass} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span class="glyphicon ${iconClass}"></span> ${message}
+            </div>`;
+
+            $('#divAlert').html(alertHtml);
+
+            // Scroll to top to show alert
+            $('html, body').animate({ scrollTop: 0 }, 'fast');
+        }
+
+        /**
+         * Clear All Alerts
+         */
+        function fnClearAlert() {
+            $('#divAlert').empty();
+        }
+
+        /**
+         * Error Handler
+         */
+        function fnOnError(message) {
+            fnShowLoading(false);
+            fnShowAlert('danger', '<strong>Error!</strong> ' + message);
+            console.error(message);
+        }</script>
+</body>
+</html>

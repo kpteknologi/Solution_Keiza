@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37301.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebHTML_Keiza", "WebHTML_Keiza\", "{2959F478-EEFF-A94E-ECE7-4B31D72E2653}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8.1"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_64664"
+		Debug.AspNetCompiler.PhysicalPath = "WebHTML_Keiza\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64664\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_64664"
+		Release.AspNetCompiler.PhysicalPath = "WebHTML_Keiza\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64664\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "64664"
+		SlnRelativePath = "WebHTML_Keiza\"
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebApp_Keiza", "WebApp_Keiza\", "{A5656DB1-8DAC-198B-A717-E24DC856760E}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8.1"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_64690"
+		Debug.AspNetCompiler.PhysicalPath = "WebApp_Keiza\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64690\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_64690"
+		Release.AspNetCompiler.PhysicalPath = "WebApp_Keiza\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64690\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "64690"
+		SlnRelativePath = "WebApp_Keiza\"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2959F478-EEFF-A94E-ECE7-4B31D72E2653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2959F478-EEFF-A94E-ECE7-4B31D72E2653}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5656DB1-8DAC-198B-A717-E24DC856760E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5656DB1-8DAC-198B-A717-E24DC856760E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BD737C48-BDE9-42B3-A8CD-BDA7CE020029}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+2026-08-10 12:05:47 | MainControllerMSSQL-updateAsnafProfile: Asnaf updated successfully - UID: 2
+2026-08-10 12:06:24 | MainControllerMSSQL-updateAsnafProfile: Asnaf updated successfully - UID: 1
+2026-08-10 12:06:42 | MainControllerMSSQL-updateAsnafProfile: Asnaf updated successfully - UID: 1
+2026-08-10 12:11:14 | MainControllerMSSQL-updateAsnafProfile: Asnaf updated successfully - UID: 2
+2026-08-10 12:11:32 | MainControllerMSSQL-updateAsnafProfile: Asnaf updated successfully - UID: 3
+2026-08-10 12:20:30 | MainControllerMSSQL-addAsnafProfile: Asnaf added successfully - Adam Bin Zulkefli
+2026-08-10 12:22:23 | MainControllerMSSQL-addAsnafApplication: Application added successfully - Asnaf UID: 4
+2026-08-10 12:22:43 | MainControllerMSSQL-updateAsnafProfile: Asnaf updated successfully - UID: 1
+2026-08-10 12:22:55 | MainControllerMSSQL-updateAsnafApplication: Application updated - App UID: 4
+2026-08-10 12:31:22 | MainControllerMSSQL-updateAsnafApplication: Application updated - App UID: 4
+2026-08-10 12:32:40 | MainControllerMSSQL-updateAsnafApplication: Application updated - App UID: 3

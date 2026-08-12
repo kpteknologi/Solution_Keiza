@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asnaf Profile Management</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- AJAX API Caller -->
+    <script src="js/Ajax.API.Caller.js"></script>
+
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1400px;
+        }
+
+        .page-header {
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+
+        .section-header {
+            background-color: #337ab7;
+            color: white;
+            padding: 10px 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+
+        .table thead {
+            background-color: #f9f9f9;
+        }
+
+        .table tbody tr {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .table tbody tr:hover {
+                background-color: #e8f4f8;
+            }
+
+            .table tbody tr.no-records {
+                cursor: default;
+            }
+
+                .table tbody tr.no-records:hover {
+                    background-color: transparent;
+                }
+
+        .btn-group-custom {
+            margin-bottom: 20px;
+        }
+
+            .btn-group-custom .btn {
+                margin-right: 5px;
+            }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .modal-header {
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .detail-row {
+            margin-bottom: 15px;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: #333;
+            width: 200px;
+            display: inline-block;
+        }
+
+        .detail-value {
+            color: #666;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+            .status-badge.active {
+                background-color: #d4edda;
+                color: #155724;
+            }
+
+            .status-badge.inactive {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+
+            .status-badge.confirmed {
+                background-color: #d1ecf1;
+                color: #0c5460;
+            }
+
+            .status-badge.draft {
+                background-color: #d1ecf1;
+                color: #0c5460;
+            }
+
+            .status-badge.submitted {
+                background-color: #fff3cd;
+                color: #856404;
+            }
+
+            .status-badge.approved {
+                background-color: #d4edda;
+                color: #155724;
+            }
+
+            .status-badge.rejected {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+
+            .status-badge.completed {
+                background-color: #d4edda;
+                color: #155724;
+            }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+            .loading img {
+                width: 30px;
+                height: 30px;
+            }
+
+        .alert {
+            margin-top: 10px;
+        }
+
+        .no-records {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #337ab7;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .required {
+            color: #d9534f;
+        }
+
+        .amount-display {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        /* Pagination Styles */
+        .pagination-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination {
+            display: inline-block;
+            padding-left: 0;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+            .pagination > li {
+                display: inline;
+            }
+
+                .pagination > li > a,
+                .pagination > li > span {
+                    position: relative;
+                    float: left;
+                    padding: 6px 12px;
+                    margin-left: -1px;
+                    line-height: 1.42857143;
+                    color: #337ab7;
+                    text-decoration: none;
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                    cursor: pointer;
+                }
+
+                    .pagination > li > a:hover {
+                        background-color: #eee;
+                    }
+
+            .pagination > .active > a,
+            .pagination > .active > span {
+                z-index: 2;
+                color: #fff;
+                cursor: default;
+                background-color: #337ab7;
+                border-color: #337ab7;
+            }
+
+            .pagination > .disabled > a,
+            .pagination > .disabled > span {
+                color: #777;
+                cursor: not-allowed;
+                background-color: #fff;
+                border-color: #ddd;
+            }
+
+        .page-info {
+            display: inline-block;
+            margin-left: 15px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Asnaf Profile Management</h1>
+        </div>
+
+        <!-- Search and Action Buttons -->
+        <div class="search-box">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="txtSearch" placeholder="Search by Name or IC Number..." />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" id="btnSearch">
+                                <span class="glyphicon glyphicon-search"></span> Search
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button class="btn btn-success" id="btnReload">
+                        <span class="glyphicon glyphicon-refresh"></span> Reload
+                    </button>
+                    <button class="btn btn-info" id="btnAddNew">
+                        <span class="glyphicon glyphicon-plus"></span> Add New
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Messages -->
+        <div id="divAlert"></div>
+
+        <!-- Loading Indicator -->
+        <div id="divLoading" class="loading">
+            <span class="glyphicon glyphicon-refresh glyphicon-spin"></span> Loading data...
+        </div>
+
+        <!-- Asnaf Profiles Table -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered" id="asnafTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>IC Number</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>State</th>
+                        <th>Status</th>
+                        <th>Created Date</th>
+                    </tr>
+                </thead>
+                <tbody id="asnafTableBody">
+                    <tr class="no-records">
+                        <td colspan="8">No records found. Click "Reload" to fetch data.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Applications Section -->
+        <div class="section-header">
+            <span class="glyphicon glyphicon-folder-open"></span> All Asnaf Applications
+        </div>
+
+        <!-- Applications Search and Action Buttons -->
+        <div class="search-box">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="txtSearchApp" placeholder="Search by Application No..." />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" id="btnSearchApp">
+                                <span class="glyphicon glyphicon-search"></span> Search
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button class="btn btn-success" id="btnReloadApp">
+                        <span class="glyphicon glyphicon-refresh"></span> Reload
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator for Applications -->
+        <div id="divLoadingApp" class="loading">
+            <span class="glyphicon glyphicon-refresh glyphicon-spin"></span> Loading applications...
+        </div>
+
+        <!-- Applications Table -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered" id="applicationTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Asnaf Name</th>
+                        <th>Application No</th>
+                        <th>Amount</th>
+                        <th>Currency</th>
+                        <th>Status</th>
+                        <th>Created Date</th>
+                    </tr>
+                </thead>
+                <tbody id="applicationTableBody">
+                    <tr class="no-records">
+                        <td colspan="7">No applications found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container">
+            <ul class="pagination" id="pagination"></ul>
+            <span class="page-info" id="pageInfo">Showing 0 of 0 records</span>
+        </div>
+    </div>
+
+    <!-- Detail Modal (Asnaf Profile) -->
+    <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="detailModalLabel">Asnaf Profile Details</h4>
+                </div>
+                <div class="modal-body" id="divModalContent">
+                    <!-- Details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnEdit">
+                        <span class="glyphicon glyphicon-pencil"></span> Edit
+                    </button>
+                    <button type="button" class="btn btn-info" id="btnViewApplications">
+                        <span class="glyphicon glyphicon-folder-open"></span> View Applications
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal (Asnaf Profile) -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="editModalLabel">Edit Asnaf Profile</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frmEditAsnaf">
+                        <input type="hidden" id="txtEditAsnafUid" />
+
+                        <!-- Personal Information Section -->
+                        <div class="form-section-title">Personal Information</div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtEditName">Name <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="txtEditName" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtEditIcno">IC Number</label>
+                                    <input type="text" class="form-control" id="txtEditIcno" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtEditEmail">Email</label>
+                                    <input type="email" class="form-control" id="txtEditEmail" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtEditContact">Contact Number</label>
+                                    <input type="text" class="form-control" id="txtEditContact" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="ddlEditStatus">Status</label>
+                                    <select class="form-control" id="ddlEditStatus">
+                                        <option value="ACTIVE">ACTIVE</option>
+                                        <option value="INACTIVE">INACTIVE</option>
+                                        <option value="CONFIRMED">CONFIRMED</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Information Section -->
+                        <div class="form-section-title">Address Information</div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txtEditAddress1">Address Line 1</label>
+                                    <input type="text" class="form-control" id="txtEditAddress1" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txtEditAddress2">Address Line 2</label>
+                                    <input type="text" class="form-control" id="txtEditAddress2" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txtEditAddress3">Address Line 3</label>
+                                    <input type="text" class="form-control" id="txtEditAddress3" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="txtEditPostcode">Postcode</label>
+                                    <input type="text" class="form-control" id="txtEditPostcode" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="txtEditDistrict">District</label>
+                                    <input type="text" class="form-control" id="txtEditDistrict" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="txtEditState">State</label>
+                                    <input type="text" class="form-control" id="txtEditState" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveEdit">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Detail Modal -->
+    <div class="modal fade" id="appDetailModal" tabindex="-1" role="dialog" aria-labelledby="appDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="appDetailModalLabel">Application Details</h4>
+                </div>
+                <div class="modal-body" id="divAppModalContent">
+                    <!-- Details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnEditApp">
+                        <span class="glyphicon glyphicon-pencil"></span> Edit Application
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Application Modal -->
+    <div class="modal fade" id="editAppModal" tabindex="-1" role="dialog" aria-labelledby="editAppModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="editAppModalLabel">Edit Application</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frmEditApplication">
+                        <input type="hidden" id="txtEditAppUid" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtEditApplicationNo">Application No <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="txtEditApplicationNo" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="ddlEditAppStatus">Status</label>
+                                    <select class="form-control" id="ddlEditAppStatus">
+                                        <option value="DRAFT">DRAFT</option>
+                                        <option value="SUBMITTED">SUBMITTED</option>
+                                        <option value="APPROVED">APPROVED</option>
+                                        <option value="REJECTED">REJECTED</option>
+                                        <option value="COMPLETED">COMPLETED</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtEditAmount">Amount</label>
+                                    <input type="number" step="0.01" class="form-control" id="txtEditAmount" placeholder="0.00" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtEditCurrency">Currency</label>
+                                    <select class="form-control" id="txtEditCurrency">
+                                        <option value="MYR">MYR</option>
+                                        <option value="USD">USD</option>
+                                        <option value="SGD">SGD</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txtEditRemarks">Remarks</label>
+                                    <textarea class="form-control" id="txtEditRemarks" rows="3" placeholder="Additional notes or remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveEditApp">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        var gCurrentAsnafUid = '';
+        var gCurrentAppUid = '';
+        var gAllApplications = [];
+        var gCurrentPage = 1;
+        var gRowsPerPage = 10;
+        var gAsnafProfiles = {}; // Cache for asnaf profiles
+
+        $(document).ready(function () {
+            // Load all asnaf profiles on page load
+            fnLoadAsnafProfiles();
+            fnLoadAllApplications();
+
+            // Event listeners for Asnaf Profiles
+            $('#btnReload').click(function () {
+                fnLoadAsnafProfiles();
+            });
+
+            $('#btnSearch').click(function () {
+                fnSearchAsnafProfile();
+            });
+
+            $('#txtSearch').keypress(function (e) {
+                if (e.which == 13) { // Enter key
+                    fnSearchAsnafProfile();
+                    return false;
+                }
+            });
+
+            $('#btnAddNew').click(function () {
+                window.location.href = 'AsnafProfileFormPage.html';
+            });
+
+            $('#asnafTableBody').on('click', 'tr', function () {
+                var asnafUid = $(this).attr('data-asnaf-uid');
+                if (asnafUid) {
+                    fnLoadAsnafDetail(asnafUid);
+                }
+            });
+
+            $('#btnEdit').click(function () {
+                if (gCurrentAsnafUid) {
+                    fnLoadAsnafForEdit(gCurrentAsnafUid);
+                }
+            });
+
+            $('#btnSaveEdit').click(function () {
+                fnSaveAsnafProfile();
+            });
+
+            $('#btnViewApplications').click(function () {
+                if (gCurrentAsnafUid) {
+                    window.location.href = 'AsnafApplicationPage.html?asnafUid=' + gCurrentAsnafUid;
+                }
+            });
+
+            // Event listeners for Applications
+            $('#btnReloadApp').click(function () {
+                fnLoadAllApplications();
+            });
+
+            $('#btnSearchApp').click(function () {
+                fnSearchApplications();
+            });
+
+            $('#txtSearchApp').keypress(function (e) {
+                if (e.which == 13) { // Enter key
+                    fnSearchApplications();
+                    return false;
+                }
+            });
+
+            $('#applicationTableBody').on('click', 'tr', function () {
+                var appUid = $(this).attr('data-app-uid');
+                if (appUid) {
+                    fnLoadApplicationDetail(appUid);
+                }
+            });
+
+            $('#btnEditApp').click(function () {
+                if (gCurrentAppUid) {
+                    fnLoadApplicationForEdit(gCurrentAppUid);
+                }
+            });
+
+            $('#btnSaveEditApp').click(function () {
+                fnUpdateApplication();
+            });
+        });
+
+        /**
+         * ========================================
+         * ASNAF PROFILE FUNCTIONS
+         * ========================================
+         */
+
+        /**
+         * Load all Asnaf Profiles
+         */
+        function fnLoadAsnafProfiles() {
+            fnShowLoading(true);
+            fnClearAlert();
+
+            var paramArray = JSON.stringify({});
+
+            PageMethodMSSQL('GetAsnafProfiles', paramArray,
+                function (data) {
+                    fnOnLoadAsnafProfilesSuccess(data);
+                },
+                function (xhr, status, error) {
+                    fnOnError('Error loading profiles: ' + error);
+                },
+                true
+            );
+        }
+
+        /**
+        * On Load Asnaf Profiles Success
+        */
+        function fnOnLoadAsnafProfilesSuccess(data) {
+            fnShowLoading(false);
+
+            if (data) {
+                if (data.status === 'Y' && data.data && data.data.length > 0) {
+                    // Cache profiles for later use
+                    gAsnafProfiles = {};
+                    $.each(data.data, function (index, asnaf) {
+                        gAsnafProfiles[asnaf.GetSetasnafUid] = asnaf;
+                    });
+
+                    fnPopulateTable(data.data);
+                    fnShowAlert('success', 'Data loaded successfully. Total records: ' + data.data.length);
+                } else {
+                    fnShowNoRecords();
+                    fnShowAlert('info', data.message || 'No asnaf profiles found.');
+                }
+            } else {
+                fnShowNoRecords();
+                fnShowAlert('warning', 'No data received from server.');
+            }
+        }
+
+        /**
+         * Search Asnaf Profile
+         */
+        function fnSearchAsnafProfile() {
+            var searchText = $('#txtSearch').val().trim();
+
+            if (!searchText) {
+                fnShowAlert('warning', 'Please enter search text.');
+                return;
+            }
+
+            fnShowLoading(true);
+            fnClearAlert();
+
+            var paramArray = JSON.stringify({ searchText: searchText });
+
+            PageMethodMSSQL('SearchAsnafProfile', paramArray,
+                function (data) {
+                    fnOnSearchAsnafProfileSuccess(data);
+                },
+                function (xhr, status, error) {
+                    fnOnError('Error searching profiles: ' + error);
+                },
+                true
+            );
+        }
+
+        /**
+        * On Search Asnaf Profile Success
+        */
+        function fnOnSearchAsnafProfileSuccess(data) {
+            fnShowLoading(false);
+
+            if (data) {
+                if (data.status === 'Y' && data.data && data.data.length > 0) {
+                    fnPopulateTable(data.data);
+                    fnShowAlert('success', 'Search completed. Found ' + data.data.length + ' record(s).');
+                } else {
+                    fnShowNoRecords();
+                    fnShowAlert('info', data.message || 'No records found matching your search.');
+                }
+            } else {
+                fnShowNoRecords();
+                fnShowAlert('warning', 'No data received from server.');
+            }
+        }
+
+        /**
+         * Load Asnaf Detail
+         */
+        function fnLoadAsnafDetail(asnafUid) {
+            var paramArray = JSON.stringify({ asnafUid: asnafUid });
+
+            PageMethodMSSQL('GetAsnafProfileById', paramArray,
+                function (data) {
+                    fnOnLoadAsnafDetailSuccess(data);
+                },
+                function (xhr, status, error) {
+                    fnOnError('Error loading profile details: ' + error);
+                },
+                true
+            );
+        }
+
+        /**
+        * On Load Asnaf Detail Success
+        */
+        function fnOnLoadAsnafDetailSuccess(data) {
+            if (data) {
+                if (data.status === 'Y' && data.data) {
+                    gCurrentAsnafUid = data.data.GetSetasnafUid;
+                    fnDisplayDetailModal(data.data);
+                    $('#detailModal').modal('show');
+                } else {
+                    fnShowAlert('danger', data.message || 'Failed to load profile details.');
+                }
+            }
+        }
+
+        /**
+         * Load Asnaf data for editing
+         */
+        function fnLoadAsnafForEdit(asnafUid) {
+            var paramArray = JSON.stringify({ asnafUid: asnafUid });
+
+            PageMethodMSSQL('GetAsnafProfileById', paramArray,
+                function (data) {
+                    if (data && data.status === 'Y' && data.data) {
+                        fnPopulateEditForm(data.data);
+                        $('#detailModal').modal('hide');
+                        $('#editModal').modal('show');
+                    } else {
+                        fnShowAlert('danger', 'Failed to load profile for editing.');
+                    }
+                },
+                function (xhr, status, error) {
+                    fnShowAlert('danger', 'Error loading profile: ' + error);
+                },
+                true
+            );
+        }
+
+        /**
+         * Populate Edit Form with data
+         */
+        function fnPopulateEditForm(asnaf) {
+            $('#txtEditAsnafUid').val(asnaf.GetSetasnafUid);
+            $('#txtEditName').val(asnaf.GetSetasnafName);
+            $('#txtEditIcno').val(asnaf.GetSetasnafIcno);
+            $('#txtEditEmail').val(asnaf.GetSetemail);
+            $('#txtEditContact').val(asnaf.GetSetcontactno);
+            $('#ddlEditStatus').val(asnaf.GetSetasnafStatus);
+            $('#txtEditAddress1').val(asnaf.GetSetresAddress1);
+            $('#txtEditAddress2').val(asnaf.GetSetresAddress2);
+            $('#txtEditAddress3').val(asnaf.GetSetresAddress3);
+            $('#txtEditPostcode').val(asnaf.GetSetpostcode);
+            $('#txtEditDistrict').val(asnaf.GetSetdistrict);
+            $('#txtEditState').val(asnaf.GetSetstate);
+        }
+
+        /**
+         * Save Asnaf Profile (Update)
+         */
+        function fnSaveAsnafProfile() {
+            // Validate required fields
+            var asnafName = $('#txtEditName').val().trim();
+            if (!asnafName) {
+                fnShowAlert('warning', 'Asnaf name is required.');
+                $('#txtEditName').focus();
+                return;
+            }
+
+            var asnafUid = $('#txtEditAsnafUid').val();
+            var asnafIcno = $('#txtEditIcno').val().trim();
+            var email = $('#txtEditEmail').val().trim();
+            var contactno = $('#txtEditContact').val().trim();
+            var asnafStatus = $('#ddlEditStatus').val();
+            var resAddress1 = $('#txtEditAddress1').val().trim();
+            var resAddress2 = $('#txtEditAddress2').val().trim();
+            var resAddress3 = $('#txtEditAddress3').val().trim();
+            var postcode = $('#txtEditPostcode').val().trim();
+            var district = $('#txtEditDistrict').val().trim();
+            var state = $('#txtEditState').val().trim();
+            var modifiedBy = 'SYSTEM'; // Replace with actual user
+
+            var paramArray = JSON.stringify({
+                asnafUid: asnafUid,
+                asnafName: asnafName,
+                asnafIcno: asnafIcno,
+                resAddress1: resAddress1,
+                resAddress2: resAddress2,
+                resAddress3: resAddress3,
+                postcode: postcode,
+                district: district,
+                state: state,
+                email: email,
+                contactno: contactno,
+                asnafStatus: asnafStatus,
+                modifiedBy: modifiedBy
+            });
+
+            fnShowLoading(true);
+            fnClearAlert();
+
+            PageMethodMSSQL('UpdateAsnafProfile', paramArray,
+                function (data) {
+                    fnOnSaveSuccess(data);
+                },
+                function (xhr, status, error) {
+                    fnOnError('Error updating profile: ' + error);
+                },
+                true
+            );
+        }
+
+        /**
+         * On Save Success
+         */
+        function fnOnSaveSuccess(data) {
+            fnShowLoading(false);
+
+            if (data && data.status === 'Y') {
+                fnShowAlert('success', data.message || 'Profile updated successfully!');
+                $('#editModal').modal('hide');
+                // Reload the profiles list
+                fnLoadAsnafProfiles();
+                // Clear current UID
+                gCurrentAsnafUid = '';
+            } else {
+                fnShowAlert('danger', data.message || 'Failed to update profile.');
+            }
+        }
+
+        /**
+         * Populate Table with Data
+         */
+        function fnPopulateTable(data) {
+            var tbody = $('#asnafTableBody');
+            tbody.empty();
+
+            var counter = 1;
+            $.each(data, function (index, asnaf) {
+                var statusClass = 'active';
+                if (asnaf.GetSetasnafStatus === 'INACTIVE') {
+                    statusClass = 'inactive';
+                } else if (asnaf.GetSetasnafStatus === 'CONFIRMED') {
+                    statusClass = 'confirmed';
+                }
+
+                var row = $('<tr>')
+                    .attr('data-asnaf-uid', asnaf.GetSetasnafUid)
+                    .append($('<td>').text(counter))
+                    .append($('<td>').text(asnaf.GetSetasnafName))
+                    .append($('<td>').text(asnaf.GetSetasnafIcno))
+                    .append($('<td>').text(asnaf.GetSetemail))
+                    .append($('<td>').text(asnaf.GetSetcontactno))
+                    .append($('<td>').text(asnaf.GetSetstate))
+                    .append($('<td>').append(
+                        $('<span>').addClass('status-badge ' + statusClass).text(asnaf.GetSetasnafStatus)
+                    ))
+                    .append($('<td>').text(fnFormatDate(asnaf.GetSetcreatedDate)));
+
+                tbody.append(row);
+                counter++;
+            });
+        }
+
+        /**
+         * Display Detail Modal
+         */
+        function fnDisplayDetailModal(asnaf) {
+            var content = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <span class="detail-value">${fnNullCheck(asnaf.GetSetasnafName)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">IC Number:</span>
+                                <span class="detail-value">${fnNullCheck(asnaf.GetSetasnafIcno)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value">${fnNullCheck(asnaf.GetSetemail)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Contact No:</span>
+                                <span class="detail-value">${fnNullCheck(asnaf.GetSetcontactno)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value">
+                                    <span class="status-badge ${fnGetStatusClass(asnaf.GetSetasnafStatus)}">${fnNullCheck(asnaf.GetSetasnafStatus)}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-row">
+                                <span class="detail-label">Address 1:</span>
+                                <span class="detail-value">${fnNullCheck(asnaf.GetSetresAddress1)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Address 2:</span>
+                                <span class="detail-value">${fnNullCheck(asnaf.GetSetresAddress2)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Address 3:</span>
+                                <span class="detail-value">${fnNullCheck(asnaf.GetSetresAddress3)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Postcode:</span>
+                                <span class="detail-value">${fnNullCheck(asnaf.GetSetpostcode)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">District:</span>
+                                <span class="detail-value">${fnNullCheck(asnaf.GetSetdistrict)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">State:</span>
+                                <span class="detail-value">${fnNullCheck(asnaf.GetSetstate)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <small class="text-muted">
+                                <strong>Created By:</strong> ${fnNullCheck(asnaf.GetSetcreatedBy)} on ${fnFormatDate(asnaf.GetSetcreatedDate)}<br/>
+                                <strong>Modified By:</strong> ${fnNullCheck(asnaf.GetSetmodifiedBy)} on ${fnFormatDate(asnaf.GetSetmodifiedDate)}<br/>
+                                <strong>Confirmed By:</strong> ${fnNullCheck(asnaf.GetSetconfirmedBy)} on ${fnFormatDate(asnaf.GetSetconfirmedDate)}
+                            </small>
+                        </div>
+                    </div>
+                `;
+
+            $('#divModalContent').html(content);
+        }
+
+        /**
+         * Show No Records Message
+         */
+        function fnShowNoRecords() {
+            var tbody = $('#asnafTableBody');
+            tbody.empty();
+            tbody.append($('<tr class="no-records">').append(
+                $('<td colspan="8">').text('No records found.')
+            ));
+        }
+
+        /**
+         * ========================================
+         * APPLICATIONS FUNCTIONS
+         * ========================================
+         */
+
+        /**
+         * Load All Applications
+         */
+        function fnLoadAllApplications() {
+            fnShowLoadingApp(true);
+
+            var paramArray = JSON.stringify({});
+
+            PageMethodMSSQL('GetAsnafApplications', paramArray,
+                function (data) {
+                    fnOnLoadApplicationsSuccess(data);
+                },
+                function (xhr, status, error) {
+                    fnOnError('Error loading applications: ' + error);
+                    fnShowLoadingApp(false);
+                },
+                true
+            );
+        }
+
+        /**
+         * On Load Applications Success
+         */
+        function fnOnLoadApplicationsSuccess(data) {
+            fnShowLoadingApp(false);
+
+            if (data && data.status === 'Y' && data.data && data.data.length > 0) {
+                gAllApplications = data.data;
+                gCurrentPage = 1;
+                fnDisplayApplicationsPage(gCurrentPage);
+                fnRenderPagination();
+            } else {
+                gAllApplications = [];
+                fnShowNoRecordsApp();
+            }
+        }
+
+        /**
+         * Search Applications
+         */
+        function fnSearchApplications() {
+            var searchText = $('#txtSearchApp').val().trim();
+
+            if (!searchText) {
+                fnLoadAllApplications();
+                return;
+            }
+
+            // Filter from loaded applications
+            var filtered = gAllApplications.filter(function (app) {
+                var appNo = app.GetSetapplicationNo || '';
+                return appNo.toLowerCase().includes(searchText.toLowerCase());
+            });
+
+            if (filtered.length > 0) {
+                gAllApplications = filtered;
+                gCurrentPage = 1;
+                fnDisplayApplicationsPage(gCurrentPage);
+                fnRenderPagination();
+            } else {
+                fnShowNoRecordsApp();
+                $('#pagination').empty();
+                $('#pageInfo').text('Showing 0 of 0 records');
+            }
+        }
+
+        /**
+         * Display Applications Page
+         */
+        function fnDisplayApplicationsPage(page) {
+            var start = (page - 1) * gRowsPerPage;
+            var end = start + gRowsPerPage;
+            var pageData = gAllApplications.slice(start, end);
+
+            var tbody = $('#applicationTableBody');
+            tbody.empty();
+
+            var counter = start + 1;
+            $.each(pageData, function (index, app) {
+                var statusClass = fnGetAppStatusClass(app.GetSetapplicationStatus);
+                var amount = app.GetSetamount ? parseFloat(app.GetSetamount).toFixed(2) : '0.00';
+                var asnafName = fnGetAsnafName(app.GetSetasnafUid);
+
+                var row = $('<tr>')
+                    .attr('data-app-uid', app.GetSetappUid)
+                    .append($('<td>').text(counter))
+                    .append($('<td>').text(asnafName))
+                    .append($('<td>').text(app.GetSetapplicationNo))
+                    .append($('<td>').append(
+                        $('<span>').addClass('amount-display').text(amount)
+                    ))
+                    .append($('<td>').text(app.GetSetcurrency || 'MYR'))
+                    .append($('<td>').append(
+                        $('<span>').addClass('status-badge ' + statusClass).text(app.GetSetapplicationStatus)
+                    ))
+                    .append($('<td>').text(fnFormatDate(app.GetSetapplicationCreatedDate)));
+
+                tbody.append(row);
+                counter++;
+            });
+
+            // Update page info
+            var showing = pageData.length > 0 ? start + 1 : 0;
+            var showingTo = start + pageData.length;
+            $('#pageInfo').text('Showing ' + showing + '-' + showingTo + ' of ' + gAllApplications.length + ' records');
+        }
+
+        /**
+         * Render Pagination
+         */
+        function fnRenderPagination() {
+            var totalPages = Math.ceil(gAllApplications.length / gRowsPerPage);
+            var pagination = $('#pagination');
+            pagination.empty();
+
+            if (totalPages <= 1) return;
+
+            // Previous button
+            var prevLi = $('<li>').addClass(gCurrentPage === 1 ? 'disabled' : '');
+            prevLi.append($('<a>').text('«').click(function () {
+                if (gCurrentPage > 1) {
+                    gCurrentPage--;
+                    fnDisplayApplicationsPage(gCurrentPage);
+                    fnRenderPagination();
+                }
+            }));
+            pagination.append(prevLi);
+
+            // Page numbers
+            var startPage = Math.max(1, gCurrentPage - 2);
+            var endPage = Math.min(totalPages, gCurrentPage + 2);
+
+            if (startPage > 1) {
+                pagination.append($('<li>').append($('<a>').text('1').click(function () {
+                    gCurrentPage = 1;
+                    fnDisplayApplicationsPage(gCurrentPage);
+                    fnRenderPagination();
+                })));
+                if (startPage > 2) {
+                    pagination.append($('<li>').addClass('disabled').append($('<span>').text('...')));
+                }
+            }
+
+            for (var i = startPage; i <= endPage; i++) {
+                var li = $('<li>').addClass(i === gCurrentPage ? 'active' : '');
+                var pageNum = i;
+                li.append($('<a>').text(i).click(function () {
+                    var page = parseInt($(this).text());
+                    gCurrentPage = page;
+                    fnDisplayApplicationsPage(gCurrentPage);
+                    fnRenderPagination();
+                }));
+                pagination.append(li);
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.append($('<li>').addClass('disabled').append($('<span>').text('...')));
+                }
+                pagination.append($('<li>').append($('<a>').text(totalPages).click(function () {
+                    gCurrentPage = totalPages;
+                    fnDisplayApplicationsPage(gCurrentPage);
+                    fnRenderPagination();
+                })));
+            }
+
+            // Next button
+            var nextLi = $('<li>').addClass(gCurrentPage === totalPages ? 'disabled' : '');
+            nextLi.append($('<a>').text('»').click(function () {
+                if (gCurrentPage < totalPages) {
+                    gCurrentPage++;
+                    fnDisplayApplicationsPage(gCurrentPage);
+                    fnRenderPagination();
+                }
+            }));
+            pagination.append(nextLi);
+        }
+
+        /**
+         * Load Application Detail
+         */
+        function fnLoadApplicationDetail(appUid) {
+            var paramArray = JSON.stringify({ appUid: appUid });
+
+            PageMethodMSSQL('GetAsnafApplicationById', paramArray,
+                function (data) {
+                    fnOnLoadApplicationDetailSuccess(data);
+                },
+                function (xhr, status, error) {
+                    fnOnError('Error loading application details: ' + error);
+                },
+                true
+            );
+        }
+
+        /**
+         * On Load Application Detail Success
+         */
+        function fnOnLoadApplicationDetailSuccess(data) {
+            if (data && data.status === 'Y' && data.data) {
+                gCurrentAppUid = data.data.GetSetappUid;
+                fnDisplayAppDetailModal(data.data);
+                $('#appDetailModal').modal('show');
+            } else {
+                fnShowAlert('danger', data.message || 'Failed to load application details.');
+            }
+        }
+
+        /**
+         * Display Application Detail Modal
+         */
+        function fnDisplayAppDetailModal(app) {
+            var amount = app.GetSetamount ? parseFloat(app.GetSetamount).toFixed(2) : '0.00';
+            var asnafName = fnGetAsnafName(app.GetSetasnafUid);
+
+            var content = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="detail-row">
+                                <span class="detail-label">Asnaf Name:</span>
+                                <span class="detail-value">${asnafName}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Application No:</span>
+                                <span class="detail-value">${fnNullCheck(app.GetSetapplicationNo)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value">
+                                    <span class="status-badge ${fnGetAppStatusClass(app.GetSetapplicationStatus)}">${fnNullCheck(app.GetSetapplicationStatus)}</span>
+                                </span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Amount:</span>
+                                <span class="detail-value amount-display">${amount}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Currency:</span>
+                                <span class="detail-value">${fnNullCheck(app.GetSetcurrency)}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-row">
+                                <span class="detail-label">Remarks:</span>
+                                <span class="detail-value">${fnNullCheck(app.GetSetremarks)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Created By:</span>
+                                <span class="detail-value">${fnNullCheck(app.GetSetapplicationCreatedBy)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Created Date:</span>
+                                <span class="detail-value">${fnFormatDate(app.GetSetapplicationCreatedDate)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Modified By:</span>
+                                <span class="detail-value">${fnNullCheck(app.GetSetapplicationModifiedBy)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Modified Date:</span>
+                                <span class="detail-value">${fnFormatDate(app.GetSetapplicationModifiedDate)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            $('#divAppModalContent').html(content);
+        }
+
+        /**
+         * Load Application for Editing
+         */
+        function fnLoadApplicationForEdit(appUid) {
+            var paramArray = JSON.stringify({ appUid: appUid });
+
+            PageMethodMSSQL('GetAsnafApplicationById', paramArray,
+                function (data) {
+                    if (data && data.status === 'Y' && data.data) {
+                        fnPopulateEditAppForm(data.data);
+                        $('#appDetailModal').modal('hide');
+                        $('#editAppModal').modal('show');
+                    } else {
+                        fnShowAlert('danger', 'Failed to load application for editing.');
+                    }
+                },
+                function (xhr, status, error) {
+                    fnShowAlert('danger', 'Error loading application: ' + error);
+                },
+                true
+            );
+        }
+
+        /**
+         * Populate Edit Application Form
+         */
+        function fnPopulateEditAppForm(app) {
+            $('#txtEditAppUid').val(app.GetSetappUid);
+            $('#txtEditApplicationNo').val(app.GetSetapplicationNo);
+            $('#ddlEditAppStatus').val(app.GetSetapplicationStatus);
+            $('#txtEditAmount').val(app.GetSetamount);
+            $('#txtEditCurrency').val(app.GetSetcurrency);
+            $('#txtEditRemarks').val(app.GetSetremarks);
+        }
+
+        /**
+         * Update Application
+         */
+        function fnUpdateApplication() {
+            var applicationNo = $('#txtEditApplicationNo').val().trim();
+            if (!applicationNo) {
+                fnShowAlert('warning', 'Application number is required.');
+                $('#txtEditApplicationNo').focus();
+                return;
+            }
+
+            var appUid = $('#txtEditAppUid').val();
+            var applicationStatus = $('#ddlEditAppStatus').val();
+            var amount = $('#txtEditAmount').val().trim();
+            var currency = $('#txtEditCurrency').val();
+            var remarks = $('#txtEditRemarks').val().trim();
+            var modifiedBy = 'SYSTEM'; // Replace with actual user
+
+            var paramArray = JSON.stringify({
+                appUid: appUid,
+                applicationNo: applicationNo,
+                applicationStatus: applicationStatus,
+                amount: amount,
+                currency: currency,
+                remarks: remarks,
+                modifiedBy: modifiedBy
+            });
+
+            fnShowLoadingApp(true);
+            fnClearAlert();
+
+            PageMethodMSSQL('UpdateAsnafApplication', paramArray,
+                function (data) {
+                    fnOnSaveAppSuccess(data);
+                },
+                function (xhr, status, error) {
+                    fnOnError('Error updating application: ' + error);
+                    fnShowLoadingApp(false);
+                },
+                true
+            );
+        }
+
+        /**
+         * On Save Application Success
+         */
+        function fnOnSaveAppSuccess(data) {
+            fnShowLoadingApp(false);
+
+            if (data && data.status === 'Y') {
+                fnShowAlert('success', data.message || 'Application updated successfully!');
+                $('#editAppModal').modal('hide');
+                // Reload applications
+                fnLoadAllApplications();
+                gCurrentAppUid = '';
+            } else {
+                fnShowAlert('danger', data.message || 'Failed to update application.');
+            }
+        }
+
+        /**
+         * Show No Records for Applications
+         */
+        function fnShowNoRecordsApp() {
+            var tbody = $('#applicationTableBody');
+            tbody.empty();
+            tbody.append($('<tr class="no-records">').append(
+                $('<td colspan="7">').text('No applications found.')
+            ));
+        }
+
+        /**
+         * Get Asnaf Name by UID
+         */
+        function fnGetAsnafName(asnafUid) {
+            if (gAsnafProfiles[asnafUid]) {
+                return gAsnafProfiles[asnafUid].GetSetasnafName || '-';
+            }
+            return '-';
+        }
+
+        /**
+         * Get Application Status Class
+         */
+        function fnGetAppStatusClass(status) {
+            switch (status) {
+                case 'DRAFT':
+                    return 'draft';
+                case 'SUBMITTED':
+                    return 'submitted';
+                case 'APPROVED':
+                    return 'approved';
+                case 'REJECTED':
+                    return 'rejected';
+                case 'COMPLETED':
+                    return 'completed';
+                default:
+                    return 'draft';
+            }
+        }
+
+        /**
+         * ========================================
+         * UTILITY FUNCTIONS
+         * ========================================
+         */
+
+        /**
+         * Show Loading Indicator
+         */
+        function fnShowLoading(show) {
+            if (show) {
+                $('#divLoading').show();
+            } else {
+                $('#divLoading').hide();
+            }
+        }
+
+        /**
+         * Show Loading Indicator for Applications
+         */
+        function fnShowLoadingApp(show) {
+            if (show) {
+                $('#divLoadingApp').show();
+            } else {
+                $('#divLoadingApp').hide();
+            }
+        }
+
+        /**
+         * Show Alert Message
+         */
+        function fnShowAlert(type, message) {
+            var alertClass = 'alert-' + type;
+            var alertHtml = `<div class="alert ${alertClass} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    ${message}
+                </div>`;
+
+            $('#divAlert').append(alertHtml);
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(function () {
+                $('.alert').fadeOut('slow', function () {
+                    $(this).remove();
+                });
+            }, 5000);
+        }
+
+        /**
+         * Clear All Alerts
+         */
+        function fnClearAlert() {
+            $('#divAlert').empty();
+        }
+
+        /**
+         * Error Handler
+         */
+        function fnOnError(message) {
+            fnShowLoading(false);
+            fnShowLoadingApp(false);
+            fnShowAlert('danger', message);
+            console.error(message);
+        }
+
+        /**
+         * Format Date
+         */
+        function fnFormatDate(dateString) {
+            if (!dateString || dateString === '') {
+                return '-';
+            }
+
+            var date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                return dateString;
+            }
+
+            var day = String(date.getDate()).padStart(2, '0');
+            var month = String(date.getMonth() + 1).padStart(2, '0');
+            var year = date.getFullYear();
+            var hours = String(date.getHours()).padStart(2, '0');
+            var minutes = String(date.getMinutes()).padStart(2, '0');
+
+            return day + '/' + month + '/' + year + ' ' + hours + ':' + minutes;
+        }
+
+        /**
+         * Get Status Class
+         */
+        function fnGetStatusClass(status) {
+            switch (status) {
+                case 'ACTIVE':
+                    return 'active';
+                case 'INACTIVE':
+                    return 'inactive';
+                case 'CONFIRMED':
+                    return 'confirmed';
+                default:
+                    return 'active';
+            }
+        }
+
+        /**
+         * Null Check
+         */
+        function fnNullCheck(value) {
+            return (value && value !== null && value !== '') ? value : '-';
+        }
+    </script>
+</body>
+</html>
